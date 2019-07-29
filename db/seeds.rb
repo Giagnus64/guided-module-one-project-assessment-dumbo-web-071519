@@ -31,17 +31,19 @@ vampire = Monster.create({
 
 cave = Dungeon.create({
     level: "Easy",
-    description: "Many have perished in this dark earthen grotto!"
+    description: "Many have perished in this dark earthen grotto!", 
+    name: "Cave"
 })
 castle = Dungeon.create({
     level: "Medium",
-    description: "Enter and face your doom!"
+    description: "Enter and face your doom!", 
+    name: "Castle"
 })
 
 Fight.create({
-    hero_id: bob.id,
-    monster_id: zombie.id,
-    dungeon_id: cave.id,
+    hero: bob,
+    monster: zombie,
+    dungeon: cave,
     happened: false
     })
 

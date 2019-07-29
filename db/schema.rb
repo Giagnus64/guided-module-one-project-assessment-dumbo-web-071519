@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_29_150036) do
+ActiveRecord::Schema.define(version: 2019_07_29_203309) do
 
   create_table "dungeons", force: :cascade do |t|
     t.string "level"
     t.string "description"
+    t.string "name"
   end
 
   create_table "fights", force: :cascade do |t|
