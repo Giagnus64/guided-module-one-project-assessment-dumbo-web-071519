@@ -4,7 +4,9 @@ class Dungeon < ActiveRecord::Base
     has_many :monsters, through: :fights
 
     def self.dungeons_by_hero(hero)
-        self.all.select {|dungeon| dungeon.heros.include?(hero)}
+        #gets unique dungeons per hero
+        dungeon_list = self.all.select {|dungeon| dungeon.heros.include?(hero)}
+        dungeon_list.uniq
     end
 
     def self.seed_dungeon(level, hero)
@@ -20,6 +22,8 @@ class Dungeon < ActiveRecord::Base
             mon = Monster.generate_monster(level)
             Fight.seed_fight(hero, mon, dung)
         end
+        #return dungeon instance
+        dung
     end
     
     #returns a random description

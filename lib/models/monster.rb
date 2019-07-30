@@ -27,7 +27,7 @@ class Monster < ActiveRecord::Base
 
         Monster.create({
             name: self.random_monster_name, 
-            strength: rand(str_mod + 1), 
+            strength: rand(str_mod), 
             victory_noise: self.get_victory_noise,
             attack_noise: self.get_attack_noise,
             defeat_noise: self.get_defeat_noise
@@ -38,11 +38,11 @@ class Monster < ActiveRecord::Base
     def self.determine_difficulty(level)
         case level
             when "easy"
-                str_mod = 10
+                str_mod = 1..10
             when "medium"
-                str_mod = 15
+                str_mod = 5..15
             when "hard"
-                str_mod = 20
+                str_mod = 10..20
         end
         str_mod
     end
@@ -64,10 +64,5 @@ class Monster < ActiveRecord::Base
         noises = ["ROAAAAAAAAR", "Take that, pesky adventurer!", "Welcome to Chili's!"]
         noises[rand(noises.count)]
     end
-
-    def destroy_monster
-        puts self.defeat_noise
-        self.destroy
-    end
-
+    
 end
