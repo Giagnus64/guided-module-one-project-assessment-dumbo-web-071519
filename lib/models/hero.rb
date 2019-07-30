@@ -21,8 +21,9 @@ class Hero < ActiveRecord::Base
 
     def self.handle_new_adventurer
        puts "A new challenger approaches! Let's see if you are any good!"
-       puts "Enter your email address - (this will be used for login purposes only)."
-       email = gets.chomp
+    #    puts "Enter your email address - (this will be used for login purposes only)."
+    #    email = gets.chomp
+        email = TTY::Prompt.new.ask("Enter your email address - (this will be used for login purposes only).") { |q| q.validate :email } 
        selection_choice = TTY::Prompt.new.select('What is thy name, Hero?', {"Use my own name": 1, "Choose from a list of adventurer names": 2})
        adventurer_name = self.name_handler(selection_choice)
        adventurer_chants = self.ask_for_battle_chants
