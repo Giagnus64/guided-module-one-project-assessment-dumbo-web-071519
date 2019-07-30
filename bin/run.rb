@@ -7,7 +7,16 @@ hero_instance = cli.welcome
 #assigns the hero instance to the interface instance
 cli.hero = hero_instance
 #gives the main_menu instance
-cli.main_menu
+next_interface = cli.main_menu
+
+while next_interface != "exit"
+    case next_interface 
+        when "main_menu"
+            next_interface = cli.main_menu
+    end
+end
+
+
 
 
 binding.pry
