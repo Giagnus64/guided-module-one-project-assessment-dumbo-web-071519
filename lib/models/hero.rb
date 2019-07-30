@@ -3,11 +3,6 @@ class Hero < ActiveRecord::Base
     has_many :monsters, through: :fights
     has_many :dungeons, through: :fights
 
-    # attr_accessor :prompt
-    
-    # def initialize()
-    #     @prompt = TTY::Prompt.new
-    # end
 
     def self.get_hero_names
         #calls the smash api to get character hashes
