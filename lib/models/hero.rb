@@ -72,4 +72,26 @@ class Hero < ActiveRecord::Base
         chants["defeat_chant"]= gets.chomp
         return chants
     end
+
+    def self.delete_hero(hero_instance)
+        
+        delete_choice = self.prompt.select("Oh adventurer, it is a shame to see you perish. Are you sure?", {"Yes": 1, "No": 2 })
+        outcome = self.hero_delete_choice(delete_choice, hero_instance)
+    end
+
+    def self.hero_delete_choice(delete_choice, hero_instance)
+        case delete_choice
+        when 1
+ 
+            #delete this hero's name
+            hero_instance.destroy
+            #next step: return to welcome interface
+            Interface.welcome
+        when 2
+            puts "That's it, you champion. Keep fighting!"
+            #next step: return to main_menu
+        end
+           #return either current or new hero name
+    end
+
 end
