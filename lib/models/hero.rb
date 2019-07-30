@@ -43,9 +43,9 @@ class Hero < ActiveRecord::Base
     def self.name_handler(adventurer_choice)
         case adventurer_choice
             when 1
-                self.prompt.ask("Enter your name please.")
+               hero_name = self.prompt.ask("Enter your name please.")
             when 2
-            hero_name = self.prompt.select("Select your name please.", self.get_hero_names)
+               hero_name = self.prompt.select("Select your name please.", self.get_hero_names)
         end
 
         return hero_name
