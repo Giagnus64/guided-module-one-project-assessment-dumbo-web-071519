@@ -17,6 +17,7 @@ class Interface
     end
 
     def main_menu
+        hero.reload
         system "clear"
         puts "Welcome #{self.hero.name}!"
         answer = prompt.select("What do you want to do today?") do |menu|
