@@ -103,4 +103,25 @@ class Hero < ActiveRecord::Base
 		Hero.prompt.keypress("Your adventurer has been updated! Returning to main menu automatically in 5 seconds ...", timeout: 5)
 		return "main_menu"
 	end
+
+    def self.delete_hero(hero_instance)
+        
+        delete_choice = self.prompt.select("Oh adventurer, it is a shame to see you perish. Are you sure?", {"Yes": 1, "No": 2 })
+        outcome = self.hero_delete_choice(delete_choice, hero_instance)
+    end
+
+    def self.hero_delete_choice(delete_choice, hero_instance)
+        case delete_choice
+        when 1
+            #delete this hero
+            hero_instance.destroy
+            #next step: return to welcome interface
+            return "exit"
+        when 2
+            puts "That's it, you champion. Keep fighting!"
+            return "main_menu"
+        end
+         
+    end
+
 end
