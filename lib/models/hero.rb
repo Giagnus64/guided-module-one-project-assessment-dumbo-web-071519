@@ -3,6 +3,10 @@ class Hero < ActiveRecord::Base
     has_many :monsters, through: :fights
     has_many :dungeons, through: :fights
 
+    def self.prompt
+        TTY::Prompt.new
+    end
+
 
     def self.get_hero_names
         #calls the smash api to get character hashes
@@ -18,8 +22,11 @@ class Hero < ActiveRecord::Base
        puts "A new challenger approaches! Let's see if you are any good!"
     #    puts "Enter your email address - (this will be used for login purposes only)."
     #    email = gets.chomp
-        email = TTY::Prompt.new.ask("Enter your email address - (this will be used for login purposes only).") { |q| q.validate :email } 
-       selection_choice = TTY::Prompt.new.select('What is thy name, Hero?', {"Use my own name": 1, "Choose from a list of adventurer names": 2})
+       # asks for email and validates using TTY PROMPT
+       email = self.prompt.ask("Enter your email address - (this will be used for login purposes only).") { |q| q.validate :email } 
+       #gives selection choices through TTY PROMPT
+       selection_choice = self.prompt.select('What is thy name, Hero?', {"Use my own name": 1, "Choose from a list of adventurer names": 2})
+       # handles name input choice
        adventurer_name = self.name_handler(selection_choice)
        adventurer_chants = self.ask_for_battle_chants
 
@@ -36,9 +43,9 @@ class Hero < ActiveRecord::Base
     def self.name_handler(adventurer_choice)
         case adventurer_choice
             when 1
-            hero_name = TTY::Prompt.new.ask("Enter your name please.")
+                self.prompt.ask("Enter your name please.")
             when 2
-            hero_name = TTY::Prompt.new.select("Select your name please.", self.get_hero_names)
+            hero_name = self.prompt.select("Select your name please.", self.get_hero_names)
         end
 
         return hero_name
