@@ -82,16 +82,15 @@ class Hero < ActiveRecord::Base
     def self.hero_delete_choice(delete_choice, hero_instance)
         case delete_choice
         when 1
- 
-            #delete this hero's name
+            #delete this hero
             hero_instance.destroy
             #next step: return to welcome interface
-            Interface.welcome
+            return "exit"
         when 2
             puts "That's it, you champion. Keep fighting!"
-            #next step: return to main_menu
+            return "main_menu"
         end
-           #return either current or new hero name
+         
     end
 
 end
