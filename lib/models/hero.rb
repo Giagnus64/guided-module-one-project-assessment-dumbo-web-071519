@@ -38,7 +38,6 @@ class Hero < ActiveRecord::Base
            defeat_chant: adventurer_chants["defeat_chant"],
            strength: rand(20)   
         })
-        binding.pry
     end
     #handles name_input choice
     def self.name_handler(adventurer_choice)
@@ -59,6 +58,7 @@ class Hero < ActiveRecord::Base
          if heros.length == 0
             self.handle_returning_adventurer("There's no hero with that email! Please re-enter your email!")
          else 
+            ## check if user already has a hero with this email
             return heros[0]
          end
     end
@@ -68,29 +68,7 @@ class Hero < ActiveRecord::Base
         puts "What is your attack chant?"
         chants["attack_chant"] = gets.chomp
         puts "What is your victory chant?"
-        chants["victory_chant"] = gets.chomp
-        puts "What is your defeat chant?"
-        chants["defeat_chant"]= gets.chomp
-        return chants
-	end
-		
-	def check_stats
-		number_of_fights = (self.fights.any?) ? self.fights.count : "No monsters have been fought."
-		system "clear"
-		puts "These are your stats #{self.name}"
-		puts "================="
-		puts "Strength: #{self.strength}\nAttack Chant: #{self.attack_chant}\nVictory Chant: #{self.victory_chant}\nDefeat Chant: #{self.defeat_chant}\nMonster Defeated: #{number_of_fights}"
-		Hero.prompt.select("What would you like to do?") do |menu|
-			menu.choice "Change name or chants", -> {self.change_stats_prompt}
-			menu.choice "Go back to Main Menu", -> {"main_menu"}
-		end
-	end
-
-	def change_stats_prompt
-		Hero.prompt.select("What would you like to change?") do |menu|
-			menu.choice "Name", -> {self.change_stats(:name)}
-			menu.choice "Attack chant", -> {self.change_stats(:attack_chant)}
-			menu.choice "Victory chant", -> {self.change_stats(:victory_chant)}
+        
 			menu.choice "Defeat chant", -> {self.change_stats(:defeat_chant)}
 		end
 	end

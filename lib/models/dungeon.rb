@@ -28,12 +28,27 @@ class Dungeon < ActiveRecord::Base
     
     #returns a random description
     def self.get_description
-        descs = ["This place sucks.", "Abandon all hope, ye who enter here.", "Welcome to Chili's.", "Don't Enter Dead Inside", "Explored by Scooby-Doo circa 1964"]
+        descs = ["This place sucks.", "Abandon all hope, ye who enter here.", "Welcome to Chili's.", "Don't Enter Dead Inside", "Explored by Scooby-Doo circa 1964."]
         descs[rand(descs.count)]
     end
     # returns a random name
     def self.get_name
         names = ["Pharaoh's Tomb", "Catacombs", "Screeching Sawmill", "Shadow Tower", "Flooded Basement", "Chili's", "House of Doom", "Crumbling Attic", "Ancient Mausoleum",  "Abandoned Sewers", "Mangled Cages", "Corpse Vault"]
         names[rand(names.count)]
+    end
+
+    def self.check_dungeons(hero)
+        # hero has no dungeons, make them
+        if self.dungeons_by_hero(hero) == []
+            self.seed_dungeon("easy", hero)
+            self.seed_dungeon("medium", hero)
+            self.seed_dungeon("hard", hero)
+        end 
+        #direct user to the dungeon menu
+        return "dungeon_menu"   
+    end
+
+    def fights_left
+        self.fights.select{|fight| !fight.happened}
     end
 end

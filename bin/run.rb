@@ -15,11 +15,17 @@ while next_interface != "exit"
     case next_interface 
         when "main_menu"
             next_interface = cli.main_menu
+        when "dungeon_menu"
+            next_interface = cli.dungeon_menu
+        when Integer
+            next_interface = cli.inside_dungeon(next_interface)
     end
+    #binding.pry
 end
 
 
 
 
-binding.pry
-puts "hello world"
+
+#binding.pry
+puts "Goodbye!"
