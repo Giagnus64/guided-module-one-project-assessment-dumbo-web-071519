@@ -1,7 +1,11 @@
 require_relative '../config/environment'
 
+#starts a new interface instance
 cli = Interface.new
-hero = cli.welcome
+#gets the hero instance via help methods in the instance and hero classes
+hero_instance = cli.welcome
+#assigns the hero instance to the interface instance
+cli.hero = hero_instance
 
 
 

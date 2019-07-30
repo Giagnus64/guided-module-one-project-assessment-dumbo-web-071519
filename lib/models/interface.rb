@@ -6,11 +6,12 @@ class Interface
         @prompt = TTY::Prompt.new
     end
     
+    # gets hero instance via hero helper methods
     def welcome
         puts "Welcome to Dungeon Crawler!"
         answer = prompt.select("Have you been here before?") do |menu|
             menu.choice "New Adventurer", -> {Hero.handle_new_adventurer}
-            menu.choice "Returning Adventurer", -> {Hero.handle_returning_adventurer}
+            menu.choice "Returning Adventurer", -> {Hero.handle_returning_adventurer("Ah! Coming back for more, eh? Identify yourself!")}
         end
     end
 end

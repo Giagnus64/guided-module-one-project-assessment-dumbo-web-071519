@@ -29,7 +29,7 @@ class Hero < ActiveRecord::Base
        # handles name input choice
        adventurer_name = self.name_handler(selection_choice)
        adventurer_chants = self.ask_for_battle_chants
-
+     #creates new hero with variables provided
        Hero.create({
            name: adventurer_name, 
            email: email, 
@@ -39,7 +39,7 @@ class Hero < ActiveRecord::Base
            strength: rand(20)   
         })
     end
-
+    #handles name_input choice
     def self.name_handler(adventurer_choice)
         case adventurer_choice
             when 1
@@ -50,11 +50,18 @@ class Hero < ActiveRecord::Base
 
         return hero_name
     end
-
-    def self.handle_returning_adventurer
-
+    # checks and logs in returning adventurer, loops if any error is preset
+    def self.handle_returning_adventurer(string)
+         puts string
+         email = self.prompt.ask("Enter your email address.") { |q| q.validate :email }
+         heros = self.all.select {|user| user.email == email }
+         if heros.length == 0
+            self.handle_returning_adventurer("There's no hero with that email! Please re-enter your email!")
+         else 
+            return heros[0]
+         end
     end
-
+    #asks user to input battle chants
     def self.ask_for_battle_chants
         chants = {}
         puts "What is your attack chant?"
