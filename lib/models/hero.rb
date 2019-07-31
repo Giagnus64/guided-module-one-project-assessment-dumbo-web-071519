@@ -74,8 +74,9 @@ class Hero < ActiveRecord::Base
         return chants
 	end
 
-	def check_stats
-		number_of_fights = (self.fights.any?) ? self.fights.count : "No monsters have been fought."
+    def check_stats
+        fights_won = self.fights.select{|fight| fight.happened && fight.winner = self.name}
+		number_of_fights = (fights_won.any?) ? fights_won.count : "No monsters have been defeated."
 		system "clear"
 		puts "These are your stats #{self.name}"
 		puts "================="
