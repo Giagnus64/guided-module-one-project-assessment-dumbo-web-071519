@@ -83,7 +83,8 @@ class Hero < ActiveRecord::Base
 		puts "================="
 		puts "Strength: #{self.strength}\nAttack Chant: #{self.attack_chant}\nVictory Chant: #{self.victory_chant}\nDefeat Chant: #{self.defeat_chant}\nMonsters Defeated: #{number_of_fights}"
 		Hero.prompt.select("What would you like to do?") do |menu|
-			menu.choice "Change name or chants", -> {self.change_stats_prompt}
+            menu.choice "Change Name or Chants", -> {self.change_stats_prompt}
+            menu.choice "Check Monsters Defeated", -> {self.display_monster_table}
 			menu.choice "Go back to Main Menu", -> {"main_menu"}
 		end
 	end
@@ -125,9 +126,17 @@ class Hero < ActiveRecord::Base
 
     def self.display_leaderboard
        ratio_arrays = self.get_ratio_arrays
-       puts "\t\t\t\tHero Leaderboard\n"
        headings = ["Place", "Email", "Name", "Monsters Defeated", "Total Fights", "Win/Loss Ratio"]
-       table = Terminal::Table.new :headings => headings, :rows => ratio_arrays
+       table = Terminal::Table.new :title => "Adventurer Leaderboard", :headings => headings, :rows => ratio_arrays
+        
+        #aligns table columns
+        table.align_column(0, :center)
+        table.align_column(1, :center)
+        table.align_column(2, :center)
+        table.align_column(3, :center)
+        table.align_column(4, :center)
+        table.align_column(5, :center)
+
        puts table
        Hero.prompt.select("") do |menu|
 			menu.choice "Go back to Main Menu", -> {"main_menu"}
@@ -172,8 +181,11 @@ class Hero < ActiveRecord::Base
             fight.monster.defeat_noise 
         }
         headings = ["Monster Name", "Strength", "Dungeon", "Last Words"]
-        table = Terminal::Table.new :headings => headings, :rows => rows
-        puts "\t\t\t\t  Monsters Defeated"
+        table = Terminal::Table.new :title => "Monsters Defeated", :headings => headings, :rows => rows
+        table.align_column(0, :center)
+        table.align_column(1, :center)
+        table.align_column(2, :center)
+        table.align_column(3, :center)
         puts table
         Hero.prompt.select("") do |menu|
 			menu.choice "Go back to Main Menu", -> {"main_menu"}

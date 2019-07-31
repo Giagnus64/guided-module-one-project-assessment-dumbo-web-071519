@@ -23,7 +23,7 @@ class Interface
         answer = self.prompt.select("What do you want to do today?") do |menu|
             menu.choice "Enter Dungeon", -> {Dungeon.check_dungeons(self.hero)}
             menu.choice "Check/Update Stats", -> {self.hero.check_stats}
-            menu.choice "See Leaderboard", -> {Hero.display_leaderboard}
+            menu.choice "Check Leaderboard", -> {Hero.display_leaderboard}
             menu.choice "Delete Adventurer", -> {Hero.delete_hero(self.hero)}
             menu.choice "Exit Program", -> {"exit"}
         end
