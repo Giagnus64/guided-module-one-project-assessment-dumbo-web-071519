@@ -2,6 +2,7 @@ class Hero < ActiveRecord::Base
     has_many :fights
     has_many :monsters, through: :fights
     has_many :dungeons, through: :fights
+    belongs_to :user
 
     def self.prompt
         TTY::Prompt.new
@@ -18,26 +19,22 @@ class Hero < ActiveRecord::Base
         names
     end
 
-    def self.handle_new_adventurer
+    def self.make_new_hero(user)
        puts "A new challenger approaches! Let's see if you are any good!"
-    #    puts "Enter your email address - (this will be used for login purposes only)."
-    #    email = gets.chomp
-       # asks for email and validates using TTY PROMPT
-       email = self.prompt.ask("Enter your email address - (this will be used for login purposes only).") { |q| q.validate :email } 
        #gives selection choices through TTY PROMPT
-       selection_choice = self.prompt.select('What is thy name, Hero?', {"Use my own name": 1, "Choose from a list of adventurer names": 2})
+       selection_choice = self.prompt.select('What is thy name, Hero?', {"Use my own name": 1, "Choose from a list of hero names": 2})
        # handles name input choice
-       adventurer_name = self.name_handler(selection_choice)
-       adventurer_chants = self.ask_for_battle_chants
+       hero_name = self.name_handler(selection_choice)
+       hero_chants = self.ask_for_battle_chants
      #creates new hero with variables provided
        Hero.create({
-           name: adventurer_name, 
-           email: email, 
-           victory_chant: adventurer_chants["victory_chant"], 
-           attack_chant: adventurer_chants["attack_chant"],
-           defeat_chant: adventurer_chants["defeat_chant"],
+           name: hero_name,  
+           victory_chant: hero_chants["victory_chant"], 
+           attack_chant: hero_chants["attack_chant"],
+           defeat_chant: hero_chants["defeat_chant"],
            strength: rand(1..20), 
-           times_defeated: 0  
+           times_defeated: 0, 
+           user_id: user.id   
         })
     end
     #handles name_input choice
@@ -48,21 +45,20 @@ class Hero < ActiveRecord::Base
             when 2
                hero_name = self.prompt.select("Select your name please.", self.get_hero_names)
         end
-
         return hero_name
     end
-    # checks and logs in returning adventurer, loops if any error is preset
-    def self.handle_returning_adventurer(string)
-         puts string
-         email = self.prompt.ask("Enter your email address.") { |q| q.validate :email }
-         heros = self.all.select {|user| user.email == email }
-         if heros.length == 0
-            self.handle_returning_adventurer("There's no adventurer with that email! Please re-enter your email!")
-         else 
-            ## check user already has a hero with this email
-            return heros[0]
-         end
-    end
+    # # checks and logs in returning adventurer, loops if any error is preset
+    # def self.handle_returning_adventurer(string)
+    #      puts string
+    #      email = self.prompt.ask("Enter your email address.") { |q| q.validate :email }
+    #      heros = self.all.select {|user| user.email == email }
+    #      if heros.length == 0
+    #         self.handle_returning_adventurer("There's no adventurer with that email! Please re-enter your email!")
+    #      else 
+    #         ## check user already has a hero with this email
+    #         return heros[0]
+    #      end
+    # end
     #asks user to input battle chants
     def self.ask_for_battle_chants
         chants = {}
@@ -117,10 +113,12 @@ class Hero < ActiveRecord::Base
     def self.hero_delete_choice(delete_choice, hero_instance)
         case delete_choice
         when 1
-            hero_instance.destroy
+            
             hero_instance.fights.destroy_all
             hero_instance.dungeons.destroy_all
-            return "exit"
+            hero_instance.destroy
+            self.prompt.keypress("Goodbye hero! You will be forgotten...", timeout: 3)
+            return "change_hero"
         when 2
             Hero.prompt.keypress("That's it, you champion. Keep fighting!", timeout: 3)
             return "main_menu"
@@ -129,7 +127,7 @@ class Hero < ActiveRecord::Base
 
     def self.display_leaderboard
        ratio_arrays = self.get_ratio_arrays
-       headings = ["Place", "Email", "Name", "Monsters Defeated", "Total Fights", "Win/Loss Ratio"]
+       headings = ["Place", "User", "Name", "Monsters Defeated", "Total Fights", "Win/Loss Ratio"]
        table = Terminal::Table.new :title => "Adventurer Leaderboard", :headings => headings, :rows => ratio_arrays
         
         #aligns table columns
@@ -152,7 +150,7 @@ class Hero < ActiveRecord::Base
        arrays = sorted.map {|ratio_arr| 
         arr = [
             sorted.index(ratio_arr) + 1,
-            ratio_arr[0].email,
+            ratio_arr[0].user,
             ratio_arr[0].name, 
             ratio_arr[0].monsters_defeated.count, 
             ratio_arr[0].get_total_fights,

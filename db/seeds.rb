@@ -8,6 +8,19 @@ Hero.destroy_all()
 Monster.destroy_all()
 Fight.destroy_all()
 Dungeon.destroy_all()
+User.destroy_all()
+
+#create new users
+mike = User.create({
+    name: "Mike",
+    email: "mike@mike.com"
+})
+
+ann = User.create({
+    name: "Ann",
+    email: "ann@ann.com"
+})
+
 
 #create hero seeds
 bob = Hero.create({
@@ -16,17 +29,27 @@ bob = Hero.create({
     victory_chant: "Huzzah!", 
     attack_chant: "Have at you!", 
     defeat_chant: "Drat!", 
-    email: "bob@bob.com", 
+    user_id: mike.id, 
     times_defeated: 0})
+    
 laura = Hero.create({
     name:"Laura", 
     strength: rand(5..20), 
     victory_chant: "Take that!", 
     attack_chant: "Engarde!", 
     defeat_chant: "Oh darn!", 
-    email: "laura@bob.com", 
+    user_id: mike.id, 
     times_defeated: 0}    
 )
+lucifer = Hero.create({
+    name:"Lucifer", 
+    strength: rand(5..20), 
+    victory_chant: "Too hot for ya?", 
+    attack_chant: "Feel the burn!", 
+    defeat_chant: "You will perish!", 
+    user_id: ann.id, 
+    times_defeated: 0
+})
 
 #create monster seeds
 zombie = Monster.create({
@@ -51,6 +74,12 @@ dung1 = Dungeon.seed_dungeon("easy", bob)
 dung2 = Dungeon.seed_dungeon("medium", laura)
 
 dung3 = Dungeon.seed_dungeon("easy", laura)
+
+dung4 = Dungeon.seed_dungeon("easy", lucifer)
+
+dung5 = Dungeon.seed_dungeon("medium", lucifer)
+
+dung6 = Dungeon.seed_dungeon("hard", lucifer)
 
 
 

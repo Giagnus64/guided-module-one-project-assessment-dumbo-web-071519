@@ -1,6 +1,6 @@
 class Interface
 
-    attr_accessor :prompt, :hero
+    attr_accessor :prompt, :hero, :user
 
     def initialize()
         @prompt = TTY::Prompt.new
@@ -10,10 +10,32 @@ class Interface
     def welcome
         system "clear"
         puts "Welcome to Dungeon Crawler!"
-        answer = self.prompt.select("Have you been here before?") do |menu|
-            menu.choice "New Adventurer", -> {Hero.handle_new_adventurer}
-            menu.choice "Returning Adventurer", -> {Hero.handle_returning_adventurer("Ah! Coming back for more, eh? Identify yourself!")}
+        user = self.prompt.select("Have you been here before?") do |menu|
+            menu.choice "New Adventurer", -> {User.handle_new_user}
+            menu.choice "Returning Adventurer", -> {User.handle_returning_user("Ah! Coming back for more, eh? Identify yourself!")}
         end
+        self.user = user
+        self.select_hero
+    end
+
+    def select_hero
+        user.reload
+        choice_hash = self.user.heros.map{|hero|
+    {"#{hero.name} - Strength: #{hero.strength}": hero}
+        }
+        #binding.pry
+        choice_hash.push({"Create A New Hero": "Create A New Hero"})
+        choice_hash.push({"Logout": "logout"})
+        answer = self.prompt.select("Select a Hero!", choice_hash)
+        case answer
+            when "Logout"
+                return "logout"
+            when "Create A New Hero"
+                choice = Hero.make_new_hero(self.user)
+            else 
+                choice = answer
+        end
+        choice
     end
 
     def main_menu
@@ -24,7 +46,8 @@ class Interface
             menu.choice "Enter Dungeon", -> {Dungeon.check_dungeons(self.hero)}
             menu.choice "Check/Update Stats", -> {self.hero.check_stats}
             menu.choice "Check Leaderboard", -> {Hero.display_leaderboard}
-            menu.choice "Delete Adventurer", -> {Hero.delete_hero(self.hero)}
+            menu.choice "Select A Different Hero", ->{return "change_hero"}
+            menu.choice "Delete Hero", -> {Hero.delete_hero(self.hero)}
             menu.choice "Exit Program", -> {"exit"}
         end
     end

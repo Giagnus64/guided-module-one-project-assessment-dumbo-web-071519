@@ -29,12 +29,12 @@ class Dungeon < ActiveRecord::Base
     #returns a random description
     def self.get_description
         descs = ["This place sucks.", "Abandon all hope, ye who enter here.", "Welcome to Chili's.", "Don't Enter Dead Inside", "Explored by Scooby-Doo circa 1964."]
-        descs[rand(descs.count)]
+        descs.sample
     end
     # returns a random name
     def self.get_name
         names = ["Pharaoh's Tomb", "Creaking Catacombs", "Screeching Sawmill", "Shadow Tower", "Flooded Basement", "Spoopy Chili's", "House of Doom", "Crumbling Attic", "Ancient Mausoleum",  "Abandoned Sewers", "Mangled Cages", "Corpse Vault"]
-        names[rand(names.count)]
+        names.sample
     end
 
     def self.check_dungeons(hero)
