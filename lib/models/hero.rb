@@ -36,7 +36,8 @@ class Hero < ActiveRecord::Base
            victory_chant: adventurer_chants["victory_chant"], 
            attack_chant: adventurer_chants["attack_chant"],
            defeat_chant: adventurer_chants["defeat_chant"],
-           strength: rand(1..20)   
+           strength: rand(1..20), 
+           times_defeated: 0  
         })
     end
     #handles name_input choice
@@ -75,12 +76,12 @@ class Hero < ActiveRecord::Base
 	end
 
     def check_stats
-        fights_won = self.fights.select{|fight| fight.happened && fight.winner = self.name}
+        fights_won = self.fights.select{|fight| fight.happened && fight.winner == self.name}
 		number_of_fights = (fights_won.any?) ? fights_won.count : "No monsters have been defeated."
 		system "clear"
 		puts "These are your stats #{self.name}"
 		puts "================="
-		puts "Strength: #{self.strength}\nAttack Chant: #{self.attack_chant}\nVictory Chant: #{self.victory_chant}\nDefeat Chant: #{self.defeat_chant}\nMonster Defeated: #{number_of_fights}"
+		puts "Strength: #{self.strength}\nAttack Chant: #{self.attack_chant}\nVictory Chant: #{self.victory_chant}\nDefeat Chant: #{self.defeat_chant}\nMonsters Defeated: #{number_of_fights}"
 		Hero.prompt.select("What would you like to do?") do |menu|
 			menu.choice "Change name or chants", -> {self.change_stats_prompt}
 			menu.choice "Go back to Main Menu", -> {"main_menu"}
@@ -121,7 +122,47 @@ class Hero < ActiveRecord::Base
             Hero.prompt.keypress("That's it, you champion. Keep fighting!", timeout: 3)
             return "main_menu"
         end
-         
     end
 
+    def self.display_leaderboard
+       ratio_arrays = self.get_ratio_arrays
+       puts "\t\t\t\tHero Leaderboard\n"
+       headings = ["Place", "Email", "Name", "Monsters Defeated", "Total Fights", "Win/Loss Ratio"]
+       table = Terminal::Table.new :headings => headings, :rows => ratio_arrays
+       puts table
+       Hero.prompt.select("") do |menu|
+			menu.choice "Go back to Main Menu", -> {"main_menu"}
+		end
+    end
+
+    def self.get_ratio_arrays
+       ratio_hash = self.all.reduce({}) {|hash, hero| hash.update(hero => hero.get_win_loss_ratio)}
+       sorted = ratio_hash.sort_by(&:last).reverse
+       arrays = sorted.map {|ratio_arr| 
+        arr = [
+            sorted.index(ratio_arr) + 1,
+            ratio_arr[0].email,
+            ratio_arr[0].name, 
+            ratio_arr[0].monsters_defeated.count, 
+            ratio_arr[0].get_total_fights,
+            ratio_arr[1]
+        ]}
+    end
+
+    def get_win_loss_ratio
+        if self.times_defeated == 0
+            ratio = self.monsters_defeated.count
+        else 
+            ratio = self.monsters_defeated.count.to_f / self.get_total_fights.to_f
+        end
+    end
+
+    def get_total_fights
+        self.times_defeated + self.monsters_defeated.count
+    end
+
+    def monsters_defeated
+        fights_won = self.fights.select{|fight| fight.winner == self.name}
+        monster_list = fights_won.map {|fight| fight.monster}
+    end
 end

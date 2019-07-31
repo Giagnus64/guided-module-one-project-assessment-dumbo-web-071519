@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_29_203309) do
+ActiveRecord::Schema.define(version: 2019_07_31_140856) do
 
   create_table "dungeons", force: :cascade do |t|
     t.string "level"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2019_07_29_203309) do
     t.string "defeat_chant"
     t.string "attack_chant"
     t.string "email"
+    t.integer "times_defeated"
   end
 
   create_table "monsters", force: :cascade do |t|

@@ -30,6 +30,7 @@ class Fight < ActiveRecord::Base
             Fight.prompt.keypress("#{self.monster.name}: '#{self.monster.defeat_noise}!'", timeout: 3)
         else 
             self.winner = self.monster.name
+            self.hero.times_defeated += 1
             Fight.prompt.keypress("#{self.hero.name} is DEFEATED ☠️  ☠️  ☠️  ☠️  ☠️!", timeout: 3)
             Fight.prompt.keypress("#{self.monster.name}: '#{self.monster.victory_noise}!'", timeout: 3)
             Fight.prompt.keypress("#{self.hero.name}: '#{self.hero.defeat_chant}!'", timeout: 3)

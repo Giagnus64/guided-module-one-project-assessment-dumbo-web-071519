@@ -49,6 +49,6 @@ class Dungeon < ActiveRecord::Base
     end
 
     def fights_left
-        self.fights.select{|fight| !fight.happened}
+        self.fights.select{|fight| !fight.happened || fight.winner != fight.hero.name }
     end
 end
