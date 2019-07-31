@@ -108,7 +108,6 @@ class Hero < ActiveRecord::Base
     end
 
     def self.delete_hero(hero_instance)
-        
         delete_choice = self.prompt.select("Oh adventurer, it is a shame to see you perish. Are you sure?", {"Yes": 1, "No": 2 })
         outcome = self.hero_delete_choice(delete_choice, hero_instance)
     end
@@ -163,6 +162,21 @@ class Hero < ActiveRecord::Base
 
     def monsters_defeated
         fights_won = self.fights.select{|fight| fight.winner == self.name}
-        monster_list = fights_won.map {|fight| fight.monster}
+    end
+
+    def display_monster_table
+        rows = self.monsters_defeated.map{|fight| arr =
+            fight.monster.name, 
+            fight.monster.strength, 
+            fight.dungeon.name, 
+            fight.monster.defeat_noise 
+        }
+        headings = ["Monster Name", "Strength", "Dungeon", "Last Words"]
+        table = Terminal::Table.new :headings => headings, :rows => rows
+        puts "\t\t\t\t  Monsters Defeated"
+        puts table
+        Hero.prompt.select("") do |menu|
+			menu.choice "Go back to Main Menu", -> {"main_menu"}
+		end
     end
 end
