@@ -50,19 +50,19 @@ class Monster < ActiveRecord::Base
     #generates a random attack noise
     def self.get_attack_noise
         noises = ["Have at you!", "RAWR!", "slurp slurp", "You want a knuckle sandwich?!", "Your ass is grass!", "Aaaaaeeeggghhhhaaaaahhhhh"]
-        noises[rand(noises.count)]
+        noises.sample
     end
 
     #generates a random attack noise
     def self.get_defeat_noise
         noises = ["NOOOOOOOO", "SPLAT!", "I don't like you", "You will pay for this!", "This ain't over, buddy!"]
-        noises[rand(noises.count)]
+        noises.sample
     end
 
     # generates a random victory noise
     def self.get_victory_noise
         noises = ["ROAAAAAAAAR", "Take that, pesky adventurer!", "Welcome to Chili's!", "I hope you've learned your lesson, swine!", "That was fun. Let's do this again some day!"]
-        noises[rand(noises.count)]
+        noises.sample
     end
     
 end

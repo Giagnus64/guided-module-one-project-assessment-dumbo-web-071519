@@ -95,6 +95,7 @@ class Hero < ActiveRecord::Base
 			menu.choice "Attack chant", -> {self.change_stats(:attack_chant)}
             menu.choice "Victory chant", -> {self.change_stats(:victory_chant)}
             menu.choice "Defeat chant", -> {self.change_stats(:defeat_chant)}
+			menu.choice "Go back to Stats Menu", -> {self.check_stats}
         end
     end
 
@@ -104,8 +105,8 @@ class Hero < ActiveRecord::Base
 		self[key] = changed_stats
 		self.save()
 		system "clear"
-		Hero.prompt.keypress("Your adventurer has been updated! Returning to main menu automatically in 5 seconds ...", timeout: 5)
-		return "main_menu"
+		Hero.prompt.keypress("Your adventurer has been updated! Returning to stats menu automatically in 3 seconds ...", timeout: 3)
+		self.check_stats
     end
 
     def self.delete_hero(hero_instance)
@@ -188,7 +189,7 @@ class Hero < ActiveRecord::Base
         table.align_column(3, :center)
         puts table
         Hero.prompt.select("") do |menu|
-			menu.choice "Go back to Main Menu", -> {"main_menu"}
+			menu.choice "Go back to Stats Menu", -> {self.check_stats}
 		end
     end
 end
