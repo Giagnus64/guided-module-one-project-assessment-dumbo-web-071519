@@ -19,7 +19,7 @@ class Interface
     def main_menu
         hero.reload
         system "clear"
-        puts "Welcome #{self.hero.name}!"
+        puts "============================\nWelcome #{self.hero.name}!\t Strength: #{self.hero.strength}\n============================"
         answer = self.prompt.select("What do you want to do today?") do |menu|
             menu.choice "Enter Dungeon", -> {Dungeon.check_dungeons(self.hero)}
             menu.choice "Check/Update Stats", -> {self.hero.check_stats}
@@ -43,7 +43,8 @@ class Interface
     def inside_dungeon(dungeon_id)
         dung = Dungeon.find(dungeon_id)
         choice_hash = {}
-        puts "Welcome to #{dung.name}!" + "\n" + "#{dung.description}"
+        system "clear"
+        puts "Welcome to #{dung.name}!\n#{dung.description}"
         puts "There are #{dung.fights_left.count} monsters left in this dungeon."
         if dung.fights_left.count !=0
             # puts monster names and levels into a hash for choices, returns fight instance
