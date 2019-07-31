@@ -110,6 +110,8 @@ class Hero < ActiveRecord::Base
         
         delete_choice = self.prompt.select("Oh adventurer, it is a shame to see you perish. Are you sure?", {"Yes": 1, "No": 2 })
         outcome = self.hero_delete_choice(delete_choice, hero_instance)
+        hero_instance.fights.destroy
+        hero_instance.dungeons.destroy
     end
 
     def self.hero_delete_choice(delete_choice, hero_instance)

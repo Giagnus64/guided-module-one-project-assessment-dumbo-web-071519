@@ -43,8 +43,8 @@ class Interface
     def inside_dungeon(dungeon_id)
         dung = Dungeon.find(dungeon_id)
         choice_hash = {}
-        puts "Welcome to #{dung.name}!" + "\n" + "#{dung.description}"
-        puts "There are #{dung.fights_left.count} monsters left in this dungeon."
+        self.prompt.keypress("====================" + "\n" + "You are in #{dung.name}!" + "\n" + "#{dung.description}", timeout: 2)
+        self.prompt.keypress("" + "\n" + "There are #{dung.fights_left.count} monsters left in this dungeon." + "\n" + " ", timeout: 2)
         if dung.fights_left.count !=0
             # puts monster names and levels into a hash for choices, returns fight instance
             choice_hash = dung.fights_left.each_with_object({}){|fight, hash| hash["Fight #{fight.monster.name}: Strength - #{fight.monster.strength}"] = fight}
