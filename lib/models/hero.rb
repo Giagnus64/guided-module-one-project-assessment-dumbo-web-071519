@@ -36,7 +36,7 @@ class Hero < ActiveRecord::Base
            victory_chant: adventurer_chants["victory_chant"], 
            attack_chant: adventurer_chants["attack_chant"],
            defeat_chant: adventurer_chants["defeat_chant"],
-           strength: rand(20)   
+           strength: rand(1..20)   
         })
     end
     #handles name_input choice
@@ -114,12 +114,10 @@ class Hero < ActiveRecord::Base
     def self.hero_delete_choice(delete_choice, hero_instance)
         case delete_choice
         when 1
-            #delete this hero
             hero_instance.destroy
-            #next step: return to welcome interface
             return "exit"
         when 2
-            puts "That's it, you champion. Keep fighting!"
+            Hero.prompt.keypress("That's it, you champion. Keep fighting!", timeout: 3)
             return "main_menu"
         end
          
