@@ -150,7 +150,7 @@ class Hero < ActiveRecord::Base
        arrays = sorted.map {|ratio_arr| 
         arr = [
             sorted.index(ratio_arr) + 1,
-            ratio_arr[0].user,
+            ratio_arr[0].user.name,
             ratio_arr[0].name, 
             ratio_arr[0].monsters_defeated.count, 
             ratio_arr[0].get_total_fights,

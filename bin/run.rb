@@ -32,7 +32,7 @@ while next_interface != "exit"
                 exit(0)
             end
             cli.hero = hero_instance
-            next_interface = main_menu
+            next_interface = cli.main_menu
     end
 end
 

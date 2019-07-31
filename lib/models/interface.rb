@@ -19,7 +19,9 @@ class Interface
     end
 
     def select_hero
-        user.reload
+        if self.user
+            user.reload
+        end
         choice_hash = self.user.heros.map{|hero|
     {"#{hero.name} - Strength: #{hero.strength}": hero}
         }
