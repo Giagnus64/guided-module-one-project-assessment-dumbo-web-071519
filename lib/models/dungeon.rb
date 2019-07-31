@@ -33,7 +33,7 @@ class Dungeon < ActiveRecord::Base
     end
     # returns a random name
     def self.get_name
-        names = ["Pharaoh's Tomb", "Catacombs", "Screeching Sawmill", "Shadow Tower", "Flooded Basement", "Chili's", "House of Doom", "Crumbling Attic", "Ancient Mausoleum",  "Abandoned Sewers", "Mangled Cages", "Corpse Vault"]
+        names = ["Pharaoh's Tomb", "Creaking Catacombs", "Screeching Sawmill", "Shadow Tower", "Flooded Basement", "Spoopy Chili's", "House of Doom", "Crumbling Attic", "Ancient Mausoleum",  "Abandoned Sewers", "Mangled Cages", "Corpse Vault"]
         names[rand(names.count)]
     end
 

@@ -10,8 +10,23 @@ Fight.destroy_all()
 Dungeon.destroy_all()
 
 #create hero seeds
-bob = Hero.create({name:"Bob", strength: rand(5..20), victory_chant: "Huzzah!", attack_chant: "Have at you!", defeat_chant: "Drat!", email: "bob@bob.com"})
-laura = Hero.create({name:"Laura", strength: rand(5..20), victory_chant: "Take that!", attack_chant: "Engarde!", defeat_chant: "Oh darn!", email: "laura@bob.com"})
+bob = Hero.create({
+    name:"Bob", 
+    strength: rand(5..20),
+    victory_chant: "Huzzah!", 
+    attack_chant: "Have at you!", 
+    defeat_chant: "Drat!", 
+    email: "bob@bob.com", 
+    times_defeated: 0})
+laura = Hero.create({
+    name:"Laura", 
+    strength: rand(5..20), 
+    victory_chant: "Take that!", 
+    attack_chant: "Engarde!", 
+    defeat_chant: "Oh darn!", 
+    email: "laura@bob.com", 
+    times_defeated: 0}    
+)
 
 #create monster seeds
 zombie = Monster.create({
