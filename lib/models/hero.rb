@@ -56,7 +56,7 @@ class Hero < ActiveRecord::Base
          email = self.prompt.ask("Enter your email address.") { |q| q.validate :email }
          heros = self.all.select {|user| user.email == email }
          if heros.length == 0
-            self.handle_returning_adventurer("There's no hero with that email! Please re-enter your email!")
+            self.handle_returning_adventurer("There's no adventurer with that email! Please re-enter your email!")
          else 
             ## check user already has a hero with this email
             return heros[0]
@@ -110,14 +110,14 @@ class Hero < ActiveRecord::Base
         
         delete_choice = self.prompt.select("Oh adventurer, it is a shame to see you perish. Are you sure?", {"Yes": 1, "No": 2 })
         outcome = self.hero_delete_choice(delete_choice, hero_instance)
-        hero_instance.fights.destroy
-        hero_instance.dungeons.destroy
     end
 
     def self.hero_delete_choice(delete_choice, hero_instance)
         case delete_choice
         when 1
             hero_instance.destroy
+            hero_instance.fights.destroy_all
+            hero_instance.dungeons.destroy_all
             return "exit"
         when 2
             Hero.prompt.keypress("That's it, you champion. Keep fighting!", timeout: 3)
