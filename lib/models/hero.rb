@@ -47,18 +47,6 @@ class Hero < ActiveRecord::Base
         end
         return hero_name
     end
-    # # checks and logs in returning adventurer, loops if any error is preset
-    # def self.handle_returning_adventurer(string)
-    #      puts string
-    #      email = self.prompt.ask("Enter your email address.") { |q| q.validate :email }
-    #      heros = self.all.select {|user| user.email == email }
-    #      if heros.length == 0
-    #         self.handle_returning_adventurer("There's no adventurer with that email! Please re-enter your email!")
-    #      else 
-    #         ## check user already has a hero with this email
-    #         return heros[0]
-    #      end
-    # end
     #asks user to input battle chants
     def self.ask_for_battle_chants
         chants = {}
@@ -127,7 +115,7 @@ class Hero < ActiveRecord::Base
 
     def self.display_leaderboard
        ratio_arrays = self.get_ratio_arrays
-       headings = ["Place", "User", "Name", "Monsters Defeated", "Total Fights", "Win/Loss Ratio"]
+       headings = ["Place", "User", "Name", "Strength", "Monsters Defeated", "Total Fights", "Win/Loss Ratio"]
        table = Terminal::Table.new :title => "Adventurer Leaderboard", :headings => headings, :rows => ratio_arrays
         
         #aligns table columns
@@ -137,6 +125,7 @@ class Hero < ActiveRecord::Base
         table.align_column(3, :center)
         table.align_column(4, :center)
         table.align_column(5, :center)
+        table.align_column(6, :center)
 
        puts table
        Hero.prompt.select("") do |menu|
@@ -145,13 +134,14 @@ class Hero < ActiveRecord::Base
     end
 
     def self.get_ratio_arrays
-       ratio_hash = self.all.reduce({}) {|hash, hero| hash.update(hero => hero.get_win_loss_ratio)}
+       ratio_hash = self.all.reduce({}) {|hash, hero| hash.update(hero => hero.get_win_loss_ratio.round(3))}
        sorted = ratio_hash.sort_by(&:last).reverse
        arrays = sorted.map {|ratio_arr| 
         arr = [
             sorted.index(ratio_arr) + 1,
             ratio_arr[0].user.name,
-            ratio_arr[0].name, 
+            ratio_arr[0].name,
+            ratio_arr[0].strength, 
             ratio_arr[0].monsters_defeated.count, 
             ratio_arr[0].get_total_fights,
             ratio_arr[1]
