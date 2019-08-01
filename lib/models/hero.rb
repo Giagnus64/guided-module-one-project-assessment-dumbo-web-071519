@@ -4,6 +4,7 @@ class Hero < ActiveRecord::Base
     has_many :dungeons, through: :fights
     belongs_to :user
 
+
     def self.prompt
         TTY::Prompt.new
     end
@@ -34,7 +35,8 @@ class Hero < ActiveRecord::Base
            defeat_chant: hero_chants["defeat_chant"],
            strength: rand(1..20), 
            times_defeated: 0, 
-           user_id: user.id   
+           user_id: user.id , 
+           chilis_status: false  
         })
     end
     #handles name_input choice
@@ -140,7 +142,7 @@ class Hero < ActiveRecord::Base
         arr = [
             sorted.index(ratio_arr) + 1,
             ratio_arr[0].user.name,
-            ratio_arr[0].name,
+            ratio_arr[0].name + " " + "#{ratio_arr[0].trophy_status}",
             ratio_arr[0].strength, 
             ratio_arr[0].monsters_defeated.count, 
             ratio_arr[0].get_total_fights,
@@ -182,4 +184,26 @@ class Hero < ActiveRecord::Base
 			menu.choice "Go back to Stats Menu", -> {self.check_stats}
 		end
     end
+
+    def endgame
+        if (9...13).include?(self.monsters_defeated.count)
+            return true
+        elsif self.monsters_defeated.count == 13
+            return "chilis_beat"
+        else 
+            return false
+        end
+    end
+
+    def trophy_status
+        if self.endgame == "chilis_beat"
+            trophy = "🌶"
+        elsif self.endgame == true
+            trophy = "🏆"
+        else 
+            trophy = ""
+        end
+        trophy
+    end
+
 end

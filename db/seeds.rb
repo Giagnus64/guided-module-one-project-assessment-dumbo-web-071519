@@ -30,7 +30,8 @@ bob = Hero.create({
     attack_chant: "Have at you!", 
     defeat_chant: "Drat!", 
     user_id: mike.id, 
-    times_defeated: 0})
+    times_defeated: 0,
+    chilis_status: false})
     
 laura = Hero.create({
     name:"Laura", 
@@ -39,8 +40,9 @@ laura = Hero.create({
     attack_chant: "Engarde!", 
     defeat_chant: "Oh darn!", 
     user_id: mike.id, 
-    times_defeated: 0}    
-)
+    times_defeated: 0,
+    chilis_status: false 
+    })
 lucifer = Hero.create({
     name:"Lucifer", 
     strength: rand(5..20), 
@@ -48,7 +50,8 @@ lucifer = Hero.create({
     attack_chant: "Feel the burn!", 
     defeat_chant: "You will perish!", 
     user_id: ann.id, 
-    times_defeated: 0
+    times_defeated: 0, 
+    chilis_status: false
 })
 
 #create monster seeds

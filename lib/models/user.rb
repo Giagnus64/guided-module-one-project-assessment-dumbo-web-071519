@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
          email = self.prompt.ask("Enter your email address.") { |q| q.validate :email }
          users = self.all.select {|user| user.email == email }
          if users.length == 0
-            self.handle_returning_adventurer("There's no adventurer with that email! Please re-enter your email!")
+            self.handle_returning_user("There's no adventurer with that email! Please re-enter your email!")
          else 
             ## check user already has a hero with this email
             return users[0]

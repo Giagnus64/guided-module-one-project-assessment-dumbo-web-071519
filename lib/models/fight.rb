@@ -25,13 +25,13 @@ class Fight < ActiveRecord::Base
             self.winner = self.hero.name
             self.hero.strength += 1
             puts ""
-            Fight.prompt.keypress("#{self.monster.name} is DEFEATED ☠️  ☠️  ☠️  ☠️  ☠️!", timeout: 3)
+            Fight.prompt.keypress("#{self.monster.name} is DEFEATED! ☠️  ☠️  ☠️  ☠️  ☠️  ", timeout: 3)
             Fight.prompt.keypress("#{self.hero.name}: '#{self.hero.victory_chant}!'", timeout: 3)
             Fight.prompt.keypress("#{self.monster.name}: '#{self.monster.defeat_noise}!'", timeout: 3)
         else 
             self.winner = self.monster.name
             self.hero.times_defeated += 1
-            Fight.prompt.keypress("#{self.hero.name} is DEFEATED ☠️  ☠️  ☠️  ☠️  ☠️!", timeout: 3)
+            Fight.prompt.keypress("#{self.hero.name} is DEFEATED! ☠️  ☠️  ☠️  ☠️  ☠️  ", timeout: 3)
             Fight.prompt.keypress("#{self.monster.name}: '#{self.monster.victory_noise}!'", timeout: 3)
             Fight.prompt.keypress("#{self.hero.name}: '#{self.hero.defeat_chant}!'" + "\n", timeout: 3)
         end
@@ -48,9 +48,9 @@ class Fight < ActiveRecord::Base
         monster_attack = self.monster.strength + rand(20)
         attacks.push(monster_attack)
         Fight.prompt.keypress("" + "\n" + "#{self.hero.name} attacks with a power level of #{hero_attack}!" + "\n" + "#{self.hero.name}: '#{self.hero.attack_chant}!'", timeout: 3) 
-        Fight.prompt.keypress("" + "\n" + "🗡️  🗡️  🗡️  🗡️  🗡️" + "\n", timeout: 3)
+        Fight.prompt.keypress("" + "\n" + " 🗡️  🗡️  🗡️  🗡️  🗡️ " + "\n", timeout: 3)
         Fight.prompt.keypress("#{self.monster.name} attacks with a power level of #{monster_attack}!" + "\n" + "#{self.monster.name}: '#{self.monster.attack_noise}!'", timeout: 3)
-        Fight.prompt.keypress("" + "\n" + "👊  👊  👊  👊  👊", timeout: 3)
+        Fight.prompt.keypress("" + "\n" + " 👊  👊  👊  👊  👊 " + "\n", timeout: 3)
         attacks
     end
 

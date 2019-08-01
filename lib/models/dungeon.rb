@@ -51,4 +51,25 @@ class Dungeon < ActiveRecord::Base
     def fights_left
         self.fights.select{|fight| !fight.happened || fight.winner != fight.hero.name }
     end
+
+    def self.activate_chilis_mode(hero)
+        #activate chilis status for hero
+        hero.chilis_status = true
+        hero.save
+
+        #display chilis mode message
+        dung_chilis = Dungeon.create({
+            name: "Flatiron School",
+            description: "Learning is fun!",
+            level: "🔥🔥🔥EXTREME!!!🔥🔥🔥"
+        })    
+        #gets chilis monsters
+        monsters = Monster.generate_chilis_monsters
+        #generates fights for chilis monsters in chilis dungeon for that hero
+        fights = monsters.each{|monster|
+        Fight.seed_fight(hero, monster, dung_chilis)
+        }
+        
+        return "main_menu"
+    end
 end

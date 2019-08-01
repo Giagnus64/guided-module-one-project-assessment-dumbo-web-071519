@@ -44,13 +44,20 @@ class Interface
     def main_menu
         hero.reload
         system "clear"
-        puts "============================\nWelcome #{self.hero.name}!\t Strength: #{self.hero.strength}\n============================"
+        puts "============================\nWelcome #{self.hero.name}!\t Strength: #{self.hero.strength} #{self.hero.trophy_status}\n============================"
         answer = self.prompt.select("What do you want to do today?") do |menu|
             menu.choice "Enter Dungeon", -> {Dungeon.check_dungeons(self.hero)}
             menu.choice "Check/Update Stats", -> {self.hero.check_stats}
             menu.choice "Check Leaderboard", -> {Hero.display_leaderboard}
             menu.choice "Select A Different Hero", ->{return "change_hero"}
             menu.choice "Delete Hero", -> {Hero.delete_hero(self.hero)}
+            if self.hero.endgame && self.hero.chilis_status == false
+                menu.choice "Activate Chili's Mode", -> {Dungeon.activate_chilis_mode(self.hero)}
+            elsif self.hero.chilis_status 
+                menu.choice name: "Activate Chili's Mode", disabled: "(Chili's Mode Activated)"
+            else 
+                menu.choice name: "Activate Chili's Mode", disabled: '(Conquer all dungeons to unlock)'
+            end
             menu.choice "Exit Program", -> {"exit"}
         end
     end
