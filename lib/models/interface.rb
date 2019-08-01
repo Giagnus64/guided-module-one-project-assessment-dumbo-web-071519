@@ -19,6 +19,7 @@ class Interface
     end
 
     def select_hero
+        system "clear"
         if self.user
             user.reload
         end
