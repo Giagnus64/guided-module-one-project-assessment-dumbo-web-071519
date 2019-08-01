@@ -61,7 +61,7 @@ class Dungeon < ActiveRecord::Base
         dung_chilis = Dungeon.create({
             name: "Flatiron School",
             description: "Learning is fun!",
-            level: "🔥🔥🔥EXTREME!!!🔥🔥🔥"
+            level: "EXTREME!!!🔥🔥🔥"
         })    
         #gets chilis monsters
         monsters = Monster.generate_chilis_monsters
