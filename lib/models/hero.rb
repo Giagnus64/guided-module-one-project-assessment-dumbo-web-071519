@@ -151,8 +151,8 @@ class Hero < ActiveRecord::Base
     end
 
     def get_win_loss_ratio
-        if self.times_defeated == 0
-            ratio = self.monsters_defeated.count
+        if self.monsters_defeated.count == 0
+            ratio = 0
         else 
             ratio = self.monsters_defeated.count.to_f / self.get_total_fights.to_f
         end

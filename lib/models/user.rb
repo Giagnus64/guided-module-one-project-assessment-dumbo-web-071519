@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
          if users.length == 0
             self.handle_returning_user("There's no adventurer with that email! Please re-enter your email!")
          else 
-            ## check user already has a hero with this email
+            ## check if user with this email already exists
             return users[0]
          end
     end
